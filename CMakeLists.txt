@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22.2)
 # command: cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=1 && rm -rf cmake_install.cmake CMakeCache.txt CMakeFiles/ Makefile
 # set the project name
-project(template VERSION 1.0)
+project(megarunner VERSION 1.0)
 
 # Project related
 link_directories(./src)
@@ -39,5 +39,5 @@ link_directories(/opt/SGDK/res)
 include_directories(/opt/SGDK/res)
 
 file(GLOB_RECURSE SOURCES "src/*.c" main.c)
-add_executable(template ${SOURCES})
-target_link_libraries(template libs)
+add_executable(megarunner ${SOURCES})
+target_link_libraries(megarunner libs)
