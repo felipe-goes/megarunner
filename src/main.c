@@ -36,6 +36,17 @@ Sprite *obstacle;
 int obstacle_x = 320;
 int obstacle_vel_x = 0;
 
+// Colors
+u16 color_gray = -1;
+u16 color_blue = -1;
+u16 color_default = -1;
+
+void swapToColor(u16 Col) {
+  // 34 is the color of the hat of the player. Third color in the palette.
+  // Since it is loaded in PAL2 you add an offset of (16+16-1)
+  VDP_setPaletteColor(34, Col);
+}
+
 // Text
 void showText(const char s[]) { VDP_drawText(s, 20 - strlen(s) / 2, 10); }
 void clearText() { VDP_clearText(0, 10, 32); }
@@ -74,13 +85,22 @@ void myJoyHandler(u16 joy, u16 changed, u16 state) {
         startGame();
       }
     }
-    if (state & BUTTON_C) {
+
+    if (state & BUTTON_UP) {
       // Make player jump
       if (jumping == FALSE) {
         jumping = TRUE;
         player_vel_y = FIX16(-3);
         SPR_setAnim(player, ANIM_JUMP);
       }
+    }
+
+    if (state & BUTTON_A) {
+      swapToColor(color_gray);
+    } else if (state & BUTTON_B) {
+      swapToColor(color_blue);
+    } else if (state & BUTTON_C) {
+      swapToColor(color_default);
     }
   }
 }
@@ -134,6 +154,11 @@ int main() {
   SPR_setAnim(player, ANIM_RUN);
   obstacle =
       SPR_addSprite(&rock, obstacle_x, 128, TILE_ATTR(PAL2, 0, FALSE, FALSE));
+
+  // Set up colors
+  color_gray = RGB24_TO_VDPCOLOR(0x808080);
+  color_blue = RGB24_TO_VDPCOLOR(0x0000ff);
+  color_default = VDP_getPaletteColor(34);
 
   // Game loop
   // int offset = 0; // Used without parallax
